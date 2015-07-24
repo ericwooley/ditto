@@ -55,11 +55,6 @@ This Project is going to be made of several modules.
 2. typescript
 3. jest
 
-#### Module list
-1. Key manager
-
-## Roadmap
-
 ## Installation
 ```bash
 npm install
