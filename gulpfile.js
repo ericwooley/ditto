@@ -18,21 +18,9 @@ var config = {
 		ts: ['./client/ts/**/*.ts'],
 		scss: ['./client/scss/**/*.scss'],
 		jade: ['./client/jade/**/*.jade'],
-		dist: './server/client/',
-	},
-	server: {
-    src: ['./server/server'],
-		dir: './server/server/server.js'
+		dist: './dist/',
 	}
 };
-
-gulp.task( 'strongloop-server', function() {
-  server.listen( {
-    path: config.server.dir,
-    NODE_ENV: dev ? 'dev' : 'production'
-  });
-  gulp.watch( config.server.src, server.restart );
-});
 
 gulp.task('serve', ['sass'], function () {
 	browserSync.init({
@@ -91,5 +79,5 @@ gulp.task('copy-assets', function() {
 })
 
 gulp.task('default', function (cb) {
-	runSequence('clean', ['copy-assets', 'templates', 'typescript', 'sass'], ['serve', 'strongloop-server'], cb);
+	runSequence('clean', ['copy-assets', 'templates', 'typescript', 'sass'], ['serve'], cb);
 });
