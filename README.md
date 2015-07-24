@@ -34,8 +34,7 @@ you know an efficient way to do this._
 -----------------------
 
 ## Roadmap
-This Project is going to be made of several modules. Some will have been born in
-this repo, and move out as they mature.
+This Project is going to be made of several modules.
 
 1. KeyManager
   * Generating, and storing (localstorage), public and private keys.
@@ -46,9 +45,15 @@ this repo, and move out as they mature.
       heard from.
 3. Hashtag
   * look up hashtags, finding hashtag peers, requesting and sending all hashtags
-4. Peer connector
+4. PeerConnection
   * connecting to peers, and sending songs.
+5. UI Layer
+  * Connect all the other modules
 
+## Technologies
+1. ReactJS
+2. typescript
+3. jest
 
 #### Module list
 1. Key manager
