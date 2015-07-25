@@ -51,9 +51,9 @@ This Project is going to be made of several modules.
   * Connect all the other modules
 
 ## Technologies
-1. ReactJS
-2. typescript
-3. jest
+1. ReactJS - UI framework.
+2. typescript - Typed version of javascript, with most of es6 available.
+3. jest - Unit test framework.
 
 ## Installation
 ```bash

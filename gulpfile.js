@@ -10,12 +10,14 @@ var sourcemaps = require('gulp-sourcemaps');
 var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
 var server = require( 'gulp-develop-server' );
+var jest = require('gulp-jest');
+
 var dev = false;
 var config = {
 	dist: './dist',
 	client: {
     assets: ['./client/assets/**/*'],
-		ts: ['./client/ts/**/*.ts'],
+		ts: ['./client/ts/**/*.ts', './typings/**/*.ts'],
 		scss: ['./client/scss/**/*.scss'],
 		jade: ['./client/jade/**/*.jade'],
 		dist: './dist/',
@@ -50,10 +52,36 @@ gulp.task('templates', function () {
   .pipe(browserSync.stream());
 });
 
+gulp.task('jest', function () {
+    return gulp.src('./client/**/__tests__/*.ts')
+		.pipe(sourcemaps.init())
+	  .pipe(ts({
+			module: 'amd',
+			noImplicitAny: true,
+			out: 'bundle.js'
+		})).js.pipe(sourcemaps.write())
+		.pipe(jest({
+        unmockedModulePathPatterns: [
+            "node_modules/react"
+        ],
+        testDirectoryName: "spec",
+        testPathIgnorePatterns: [
+            "node_modules",
+            "spec/support"
+        ],
+        moduleFileExtensions: [
+            "js",
+            "json",
+            "react"
+        ]
+    }));
+});
+
 gulp.task('typescript', function () {
 	var tsResult = gulp.src(config.client.ts)
   .pipe(sourcemaps.init())
   .pipe(ts({
+		declarationFiles: true,
 		noImplicitAny: true,
 		out: 'bundle.js'
 	}));
