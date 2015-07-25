@@ -53,7 +53,7 @@ This Project is going to be made of several modules.
 ## Technologies
 1. ReactJS - UI framework.
 2. typescript - Typed version of javascript, with most of es6 available.
-3. jest - Unit test framework.
+3. Karma - Unit test framework. (I am done trying to wrestle jest, IT NEVER WORKS)
 
 ## Installation
 ```bash

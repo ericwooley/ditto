@@ -10,7 +10,9 @@ var sourcemaps = require('gulp-sourcemaps');
 var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
 var server = require( 'gulp-develop-server' );
-var jest = require('gulp-jest');
+var browserify = require('gulp-browserify');
+var Server = require('karma').Server;
+var rename = require('gulp-rename');
 
 var dev = false;
 var config = {
@@ -52,39 +54,29 @@ gulp.task('templates', function () {
   .pipe(browserSync.stream());
 });
 
-gulp.task('jest', function () {
-    return gulp.src('./client/**/__tests__/*.ts')
-		.pipe(sourcemaps.init())
-	  .pipe(ts({
-			module: 'amd',
-			noImplicitAny: true,
-			out: 'bundle.js'
-		})).js.pipe(sourcemaps.write())
-		.pipe(jest({
-        unmockedModulePathPatterns: [
-            "node_modules/react"
-        ],
-        testDirectoryName: "spec",
-        testPathIgnorePatterns: [
-            "node_modules",
-            "spec/support"
-        ],
-        moduleFileExtensions: [
-            "js",
-            "json",
-            "react"
-        ]
-    }));
-});
+var tsProject = ts.createProject('tsconfig.json', { sortOutput: true });
+gulp.task('test', function() {
+	gulp.src('./client/**/__tests__/*.ts')
+		.pipe(ts(tsProject)).js
+		.pipe(browserify({
+      insertGlobals : true,
+      debug : true
+    }))
+		.on('postbundle', function(src){
+			new Server({
+				configFile: __dirname + '/karma.conf.js',
+				singleRun: true
+			}).start();
+		})
+		.pipe(rename('test.js'))
+		.pipe(gulp.dest('./test/'))
+
+})
 
 gulp.task('typescript', function () {
 	var tsResult = gulp.src(config.client.ts)
   .pipe(sourcemaps.init())
-  .pipe(ts({
-		declarationFiles: true,
-		noImplicitAny: true,
-		out: 'bundle.js'
-	}));
+	.pipe(ts(tsProject))
 	return tsResult.js
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(config.client.dist + 'js'))

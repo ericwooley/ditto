@@ -4,7 +4,7 @@
   "description": "Gulp boilerplate for sass and typescript",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp test"
   },
   "author": "eric wooley",
   "license": "MIT",
@@ -14,17 +14,30 @@
     "chai": "^3.2.0",
     "clean": "^4.0.1",
     "gulp": "^3.9.0",
+    "gulp-browserify": "^0.5.1",
     "gulp-clean": "^0.3.1",
     "gulp-develop-server": "^0.4.3",
     "gulp-jade": "^1.0.1",
-    "gulp-jest": "^0.4.0",
+    "gulp-karma": "0.0.4",
     "gulp-postcss": "^5.1.10",
+    "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.0.4",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-typescript": "^2.8.0",
     "jade": "^1.11.0",
     "jasmine": "^2.3.1",
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.13.3",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-jasmine": "^0.3.6",
+    "karma-phantomjs-launcher": "^0.2.0",
+    "karma-typescript-preprocessor": "0.0.19",
+    "phantomjs": "^1.9.17",
+    "phantomjs-polyfill": "0.0.1",
     "react": "^0.13.3",
     "run-sequence": "^1.1.2"
+  },
+  "dependencies": {
+    "typed-react": "^3.4.1"
   }
 }
