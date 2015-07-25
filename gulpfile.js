@@ -94,6 +94,11 @@ gulp.task('typescript', function () {
   .pipe(sourcemaps.init())
 	.pipe(ts(tsProject))
 	return tsResult.js
+		.pipe(browserify({
+			insertGlobals : true,
+			// debug : true
+		}))
+		.pipe(rename('bundle.js'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(config.client.dist + 'js'))
     .pipe(browserSync.stream());

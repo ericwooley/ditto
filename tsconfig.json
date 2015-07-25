@@ -22,8 +22,6 @@
         "!./node_modules/**/*"
     ],
     "files": [
-        "./client/ts/__tests__/index.ts",
-        "./client/ts/__tests__/not-that-test.ts",
         "./client/ts/main.ts",
         "./client/ts/react-test.ts",
         "./typings/jasmine/jasmine.d.ts",
