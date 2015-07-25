@@ -10,7 +10,7 @@ class ReactTest extends Component<Props, any> {
 }
 describe('thing', () => {
   it('should creat a class', () => {
-    expect(true).toEqual(false);
+    /*expect(true).toEqual(false);*/
     expect(new ReactTest(new Props())).toBeTruthy();
   })
 })
