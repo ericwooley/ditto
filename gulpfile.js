@@ -13,7 +13,8 @@ var server = require( 'gulp-develop-server' );
 var browserify = require('gulp-browserify');
 var Server = require('karma').Server;
 var rename = require('gulp-rename');
-
+var notifier = require('node-notifier');
+var concat = require('gulp-concat');
 var dev = false;
 var config = {
 	dist: './dist',
@@ -23,6 +24,7 @@ var config = {
 		scss: ['./client/scss/**/*.scss'],
 		jade: ['./client/jade/**/*.jade'],
 		dist: './dist/',
+		tests: './client/**/__tests__/*.ts'
 	}
 };
 
@@ -55,22 +57,36 @@ gulp.task('templates', function () {
 });
 
 var tsProject = ts.createProject('tsconfig.json', { sortOutput: true });
-gulp.task('test', function() {
-	gulp.src('./client/**/__tests__/*.ts')
-		.pipe(ts(tsProject)).js
+gulp.task('gen-tests', function() {
+	console.log('using', config.client.tests)
+	return gulp.src(config.client.tests)
+		.pipe(ts(tsProject))
+		.js
 		.pipe(browserify({
-      insertGlobals : true,
-      debug : true
-    }))
-		.on('postbundle', function(src){
-			new Server({
-				configFile: __dirname + '/karma.conf.js',
-				singleRun: true
-			}).start();
-		})
+			insertGlobals : true,
+			// debug : true
+		}))
 		.pipe(rename('test.js'))
 		.pipe(gulp.dest('./test/'))
-
+})
+gulp.task('karma', function(done) {
+	new Server({
+		configFile: __dirname + '/karma.conf.js',
+		singleRun: true
+	}, function(exitCode) {
+		console.log('karma exited with code', exitCode)
+		if(!exitCode){
+			notifier.notify({
+				sound: true,
+				'title': 'Unit Tests Failing',
+				'message': 'Do it again'
+			});
+		}
+		done();
+	}).start();
+});
+gulp.task('test', function() {
+	return runSequence('gen-tests', 'karma');
 })
 
 gulp.task('typescript', function () {
