@@ -22,8 +22,10 @@
         "!./node_modules/**/*"
     ],
     "files": [
+        "./client/ts/__tests__/test.ts",
         "./client/ts/main.ts",
         "./client/ts/react-test.ts",
+        "./client/ts/test-bootstrap.ts",
         "./typings/jasmine/jasmine.d.ts",
         "./typings/react/react.d.ts",
         "./typings/tsd.d.ts"

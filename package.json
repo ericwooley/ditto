@@ -11,10 +11,8 @@
   "devDependencies": {
     "autoprefixer": "^5.2.0",
     "browser-sync": "^2.8.0",
-    "chai": "^3.2.0",
-    "clean": "^4.0.1",
+    "browserify": "^11.0.0",
     "gulp": "^3.9.0",
-    "gulp-browserify": "^0.5.1",
     "gulp-clean": "^0.3.1",
     "gulp-concat": "^2.6.0",
     "gulp-develop-server": "^0.4.3",
@@ -25,7 +23,6 @@
     "gulp-sass": "^2.0.4",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-typescript": "^2.8.0",
-    "install": "^0.1.8",
     "jade": "^1.11.0",
     "jasmine": "^2.3.1",
     "jasmine-core": "^2.3.4",
@@ -36,13 +33,12 @@
     "karma-phantomjs-launcher": "^0.2.0",
     "karma-typescript-preprocessor": "0.0.19",
     "node-notifier": "^4.2.3",
-    "npm": "^2.13.2",
     "phantomjs": "^1.9.17",
     "phantomjs-polyfill": "0.0.1",
     "react": "^0.13.3",
-    "run-sequence": "^1.1.2"
-  },
-  "dependencies": {
-    "typed-react": "^3.4.1"
+    "run-sequence": "^1.1.2",
+    "tsify": "^0.11.4",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
   }
 }

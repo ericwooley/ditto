@@ -10,7 +10,10 @@ var sourcemaps = require('gulp-sourcemaps');
 var postcss = require('gulp-postcss');
 var autoprefixer = require('autoprefixer');
 var server = require( 'gulp-develop-server' );
-var browserify = require('gulp-browserify');
+var tsify = require('tsify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var browserify = require('browserify');
 var Server = require('karma').Server;
 var rename = require('gulp-rename');
 var notifier = require('node-notifier');
@@ -58,24 +61,20 @@ gulp.task('templates', function () {
 
 var tsProject = ts.createProject('tsconfig.json', { sortOutput: true });
 gulp.task('gen-tests', function() {
-	console.log('using', config.client.tests)
-	return gulp.src(config.client.tests)
-		.pipe(ts(tsProject))
-		.js
-		.pipe(browserify({
-			insertGlobals : true,
-			// debug : true
-		}))
-		.pipe(rename('test.js'))
+	var b = browserify()
+    .add('client/ts/test-bootstrap.ts')
+    .plugin('tsify', { noImplicitAny: true });
+		return b.bundle()
+		.pipe(source('test.js'))
+    .pipe(buffer())
 		.pipe(gulp.dest('./test/'))
 })
 gulp.task('karma', function(done) {
 	new Server({
 		configFile: __dirname + '/karma.conf.js',
-		singleRun: true
+		singleRun: !process.env.testDev
 	}, function(exitCode) {
-		console.log('karma exited with code', exitCode)
-		if(!exitCode){
+		if(exitCode){
 			notifier.notify({
 				sound: true,
 				'title': 'Unit Tests Failing',
@@ -85,23 +84,28 @@ gulp.task('karma', function(done) {
 		done();
 	}).start();
 });
+
+gulp.task('test-dev', function() {
+	process.env.testDev = true;
+	runSequence('test', function() {
+		gulp.watch(config.client.tests, ['gen-tests'])
+	});
+
+});
+
 gulp.task('test', function() {
 	return runSequence('gen-tests', 'karma');
 })
 
 gulp.task('typescript', function () {
-	var tsResult = gulp.src(config.client.ts)
-  .pipe(sourcemaps.init())
-	.pipe(ts(tsProject))
-	return tsResult.js
-		.pipe(browserify({
-			insertGlobals : true,
-			// debug : true
-		}))
-		.pipe(rename('bundle.js'))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest(config.client.dist + 'js'))
-    .pipe(browserSync.stream());
+	var b = browserify()
+    .add('client/ts/main.ts')
+    .plugin('tsify', { noImplicitAny: true });
+		return b.bundle()
+		.pipe(source('bundle.js'))
+    .pipe(buffer())
+	  .pipe(gulp.dest(config.client.dist + 'js'))
+	  .pipe(browserSync.stream());
 });
 
 gulp.task('clean', function () {

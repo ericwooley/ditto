@@ -68,18 +68,16 @@ module.exports = function(config) {
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_WARN,
+    logLevel: config.LOG_ERROR,
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
+    autoWatch: !!process.env.testDev,
 
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    // browsers: ['Chrome'],
-
-    browsers: ['PhantomJS', 'PhantomJS_custom'],
+    browsers: process.env.testDev ? ['Chrome'] : ['PhantomJS', 'PhantomJS_custom'],
 
     // you can define custom flags
     customLaunchers: {
